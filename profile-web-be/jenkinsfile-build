@@ -14,7 +14,7 @@ pipeline {
                     branches: [[name: '*/master']],
                     userRemoteConfigs: [[
                         credentialsId:  'github-ssh',
-                        url: 'https://github.com/nut41035/profile-web-be.git']]])
+                        url: 'git@github.com:nut41035/profile-web-be.git']]])
             }
         }
     }
