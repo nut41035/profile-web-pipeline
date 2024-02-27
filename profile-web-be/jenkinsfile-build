@@ -1,9 +1,16 @@
 pipeline {
     agent { label 'agent' }
     stages {
-        stage('build') {
+        stage('test') {
             steps {
                 echo 'node --version'
+            }
+        }
+
+        stage('pull form git') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']],
+                    userRemoteConfigs: [[url: 'https://github.com/nut41035/profile-web-be.git']]])
             }
         }
     }
