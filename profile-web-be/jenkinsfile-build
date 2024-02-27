@@ -2,31 +2,52 @@ pipeline {
     agent { label 'agent' }
 
     environment {
+        GIT_REPOSITORY_URL = 'git@github.com:nut41035/profile-web-be.git'
+        GIT_BRANCH = 'master'
+        GIT_CREDENTIAL_ID = 'agent-github-ssh'
+
+        PROJECT_NAME = 'profile-web-be'
+        TAG = 'snapshot-0.0.1'
+
         SECRET_FILE_ID = credentials('be-secret-file')
+
+        AWS_ACCOUNT_ID="247083624559"
+        AWS_DEFAULT_REGION="ap-southeast-1"
     }
 
     stages {
-        stage('test') {
-            steps {
-                echo 'node --version'
-            }
-        }
-
-        stage('pull form git') {
+        stage('Pull form git') {
             steps {
                 checkout([
                     $class: 'GitSCM', 
-                    branches: [[name: 'master']],
+                    branches: [[name: ${GIT_BRNACH}]],
                     userRemoteConfigs: [[
-                        credentialsId:  'agent-github-ssh',
-                        url: 'git@github.com:nut41035/profile-web-be.git']]])
+                        credentialsId:  ${GIT_CREDENTIAL_ID},
+                        url: ${GIT_REPOSITORY_URL}]]])
             }
         }
 
-        stage('build') {
+        stage('Build') {
             steps {
                 sh "yes | cp -rf ${SECRET_FILE_ID} ./src/main/resources/"
-                sh "docker build -t profile-web-be:latest ."
+                sh "docker build -t ${PROJECT_NAME}:${TAG} ."
+            }
+        }
+
+        stage('Logging into AWS ECR') {
+            steps {
+                script {
+                sh """aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"""
+                }
+            }
+        }
+
+         stage('Push to ECR') {
+            steps {
+                script {
+                sh """docker tag ${PROJECT_NAME}:${TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${PROJECT_NAME}:${TAG}"""
+                sh """docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${PROJECT_NAME}:${TAG}"""
+                }
             }
         }
     }
