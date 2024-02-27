@@ -22,11 +22,5 @@ pipeline {
                         url: 'git@github.com:nut41035/profile-web-be.git']]])
             }
         }
-
-        stage('BUILD') {
-            setps {
-                sh "cp ${SECRET_FILE_ID} ./src/main/resources/"
-            }
-        }
     }
 }
