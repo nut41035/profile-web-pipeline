@@ -9,8 +9,12 @@ pipeline {
 
         stage('pull form git') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']],
-                    userRemoteConfigs: [[url: 'https://github.com/nut41035/profile-web-be.git']]])
+                checkout([
+                    $class: 'GitSCM', 
+                    branches: [[name: '*/master']],
+                    userRemoteConfigs: [[
+                        credentialsId:  'git-ssh',
+                        url: 'https://github.com/nut41035/profile-web-be.git']]])
             }
         }
     }
