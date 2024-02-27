@@ -1,5 +1,10 @@
 pipeline {
     agent { label 'agent' }
+
+    environment {
+        SECRET_FILE_ID = credentials('be-secret-file')
+    }
+
     stages {
         stage('test') {
             steps {
@@ -19,9 +24,6 @@ pipeline {
         }
 
         stage('BUILD') {
-            environment {
-                SECRET_FILE_ID = credentials('be-secret-file')
-            }
             setps{
                 sh '''
                 cp ${SECRET_FILE_ID} ./src/main/resources/
