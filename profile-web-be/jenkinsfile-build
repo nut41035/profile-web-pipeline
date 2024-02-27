@@ -22,5 +22,11 @@ pipeline {
                         url: 'git@github.com:nut41035/profile-web-be.git']]])
             }
         }
+
+        stage('build') {
+            steps {
+                echo 'node --version'
+            }
+        }
     }
 }
