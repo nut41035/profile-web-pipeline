@@ -25,7 +25,7 @@ pipeline {
 
         stage('build') {
             steps {
-                echo ${SECRET_FILE_ID}
+                echo "${SECRET_FILE_ID}"
             }
         }
     }
