@@ -17,5 +17,17 @@ pipeline {
                         url: 'git@github.com:nut41035/profile-web-be.git']]])
             }
         }
+
+        stage('BUILD') {
+            environment {
+                SECRET_FILE_ID = credentials('be-secret-file')
+            }
+            setps{
+                sh '''
+                cp ${SECRET_FILE_ID} ./src/main/resources/
+                docker build -t profile-web-be:latest .
+                '''
+            }
+        }
     }
 }
