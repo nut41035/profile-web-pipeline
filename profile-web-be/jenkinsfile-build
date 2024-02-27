@@ -25,7 +25,7 @@ pipeline {
 
         stage('build') {
             steps {
-                echo "${SECRET_FILE_ID}"
+                sh "cp ${SECRET_FILE_ID} ./src/main/resources/"
             }
         }
     }
