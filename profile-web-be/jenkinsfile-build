@@ -25,7 +25,8 @@ pipeline {
 
         stage('build') {
             steps {
-                sh 'cp %SECRET_FILE_ID% ./src/main/resources/'
+                sh "cp ${SECRET_FILE_ID} ./src/main/resources/"
+                sh "docker build -t profile-web-be:latest ."
             }
         }
     }
