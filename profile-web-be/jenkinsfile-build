@@ -11,9 +11,9 @@ pipeline {
             steps {
                 checkout([
                     $class: 'GitSCM', 
-                    branches: [[name: '*/master']],
+                    branches: [[name: 'master']],
                     userRemoteConfigs: [[
-                        credentialsId:  'github-ssh',
+                        credentialsId:  'agent-github-ssh',
                         url: 'git@github.com:nut41035/profile-web-be.git']]])
             }
         }
