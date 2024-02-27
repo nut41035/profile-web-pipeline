@@ -13,7 +13,7 @@ pipeline {
                     $class: 'GitSCM', 
                     branches: [[name: '*/master']],
                     userRemoteConfigs: [[
-                        credentialsId:  'git-ssh',
+                        credentialsId:  'github-ssh',
                         url: 'https://github.com/nut41035/profile-web-be.git']]])
             }
         }
